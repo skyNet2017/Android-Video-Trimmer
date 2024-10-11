@@ -5,7 +5,14 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
+
 import com.iknow.android.interfaces.VideoTrimListener;
+import com.iknow.android.utils.ToastUtil;
+import com.mobile.ffmpeg.util.FFmpegAsyncUtils;
+import com.mobile.ffmpeg.util.FFmpegExecuteCallback;
+
 import iknow.android.utils.DeviceUtil;
 import iknow.android.utils.UnitConverter;
 import iknow.android.utils.callback.SingleCallback;
@@ -13,8 +20,7 @@ import iknow.android.utils.thread.BackgroundExecutor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import nl.bravobit.ffmpeg.ExecuteBinaryResponseHandler;
-import nl.bravobit.ffmpeg.FFmpeg;
+
 
 /**
  * Author：J.Chou
@@ -25,7 +31,7 @@ import nl.bravobit.ffmpeg.FFmpeg;
 public class VideoTrimmerUtil {
 
   private static final String TAG = VideoTrimmerUtil.class.getSimpleName();
-  public static final long MIN_SHOOT_DURATION = 3000L;// 最小剪辑时间3s
+  public static final long MIN_SHOOT_DURATION = 1000L;// 最小剪辑时间3s
   public static final int VIDEO_MAX_TIME = 10;// 10秒
   public static final long MAX_SHOOT_DURATION = VIDEO_MAX_TIME * 1000L;//视频最多剪切多长时间10s
 
@@ -66,16 +72,39 @@ public class VideoTrimmerUtil {
     String[] command = cmd.split(" ");
     try {
       final String tempOutFile = outputFile;
-      FFmpeg.getInstance(context).execute(command, new ExecuteBinaryResponseHandler() {
 
-        @Override public void onSuccess(String s) {
-          callback.onFinishTrim(tempOutFile);
-        }
+      FFmpegAsyncUtils asyncTask =new FFmpegAsyncUtils();
+      String finalOutputFile = outputFile;
+      asyncTask.setCallback(new FFmpegExecuteCallback() {
 
-        @Override public void onStart() {
+        @Override
+        public void onFFmpegStart() {
           callback.onStartTrim();
         }
+
+        @Override
+        public void onFFmpegSucceed( String executeOutput) {
+          callback.onFinishTrim(finalOutputFile);
+        }
+
+        @Override
+        public void onFFmpegFailed(@Nullable String executeOutput) {
+          //ToastUtil.show(context.getApplicationContext(), executeOutput);
+          callback.onCancel();
+        }
+
+        @Override
+        public void onFFmpegProgress(@Nullable Integer progress) {
+// fload mprogress = progress/执行视频文件或语音文件时长
+        }
+
+        @Override
+        public void onFFmpegCancel() {
+
+        }
       });
+      asyncTask.execute(command);
+
     } catch (Exception e) {
       e.printStackTrace();
     }

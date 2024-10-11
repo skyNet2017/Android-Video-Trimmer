@@ -1,9 +1,11 @@
 package com.iknow.android.features.compress;
 
 import android.content.Context;
+
+
 import com.iknow.android.interfaces.VideoCompressListener;
-import nl.bravobit.ffmpeg.ExecuteBinaryResponseHandler;
-import nl.bravobit.ffmpeg.FFmpeg;
+import com.mobile.ffmpeg.util.FFmpegAsyncUtils;
+
 
 /**
  * author : J.Chou
@@ -19,23 +21,10 @@ public class VideoCompressor {
     String cmd = "-threads 2 -y -i " + inputFile + " -strict -2 -vcodec libx264 -preset ultrafast -crf 28 -acodec copy -ac 2 " + outputFile;
     String[] command = cmd.split(" ");
     try {
-      FFmpeg.getInstance(context).execute(command, new ExecuteBinaryResponseHandler() {
-        @Override
-        public void onFailure(String msg) {
-          if (callback != null) {
-            callback.onFailure("Compress video failed!");
-            callback.onFinish();
-          }
-        }
 
-        @Override
-        public void onSuccess(String msg) {
-          if (callback != null) {
-            callback.onSuccess("Compress video successed!");
-            callback.onFinish();
-          }
-        }
-      });
+      FFmpegAsyncUtils asyncTask =new FFmpegAsyncUtils();
+      asyncTask.setCallback(callback);
+      asyncTask.execute(command);
     } catch (Throwable e) {
       e.printStackTrace();
     }
