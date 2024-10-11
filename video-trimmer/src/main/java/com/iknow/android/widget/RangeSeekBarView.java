@@ -16,7 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import androidx.annotation.Nullable;
-import com.iknow.android.R;
+import com.hss01248.video_trimmer.R;
 import com.iknow.android.features.trim.VideoTrimmerUtil;
 import iknow.android.utils.DateUtil;
 import iknow.android.utils.UnitConverter;

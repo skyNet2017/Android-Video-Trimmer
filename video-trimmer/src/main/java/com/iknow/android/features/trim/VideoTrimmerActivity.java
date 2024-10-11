@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentActivity;
-import com.iknow.android.R;
-import com.iknow.android.databinding.ActivityVideoTrimBinding;
+
+import com.hss01248.video_trimmer.R;
+import com.hss01248.video_trimmer.databinding.ActivityVideoTrimBinding;
 import com.iknow.android.features.common.ui.BaseActivity;
 import com.iknow.android.interfaces.VideoTrimListener;
 import com.iknow.android.utils.ToastUtil;

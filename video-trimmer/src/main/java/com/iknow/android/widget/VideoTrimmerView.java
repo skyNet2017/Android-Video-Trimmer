@@ -20,7 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.iknow.android.R;
+
+import com.hss01248.video_trimmer.R;
 import com.iknow.android.features.trim.VideoTrimmerAdapter;
 import com.iknow.android.interfaces.IVideoTrimmerView;
 import com.iknow.android.interfaces.VideoTrimListener;
@@ -354,7 +355,7 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
     if (mRedProgressIcon.getVisibility() == View.GONE) {
       mRedProgressIcon.setVisibility(View.VISIBLE);
     }
-    final FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mRedProgressIcon.getLayoutParams();
+    final LayoutParams params = (LayoutParams) mRedProgressIcon.getLayoutParams();
     int start = (int) (RECYCLER_VIEW_PADDING + (mRedProgressBarPos - scrollPos) * averagePxMs);
     int end = (int) (RECYCLER_VIEW_PADDING + (mRightProgressPos - scrollPos) * averagePxMs);
     mRedProgressAnimator = ValueAnimator.ofInt(start, end).setDuration((mRightProgressPos - scrollPos) - (mRedProgressBarPos - scrollPos));

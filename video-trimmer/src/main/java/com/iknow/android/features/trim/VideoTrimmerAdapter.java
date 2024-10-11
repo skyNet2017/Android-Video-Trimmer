@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.iknow.android.R;
+
+import com.hss01248.video_trimmer.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
